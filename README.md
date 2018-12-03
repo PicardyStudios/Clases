@@ -8,8 +8,8 @@ Incorporate your knowledge! 🚀
 
 ----------------------------
 
-#Clases de PicardyStudios es una colección de funciones básicas y no tan básicas de implementar en nuestras aplicaciones.
+#Clases de PicardyStudios es una colección de funciones básicas y no tan básicas para implementar en nuestras aplicaciones.
 
-Desde la solicitud de permiso, captura de imágenes, mensajes, alertas, entre otros.
+Desde la solicitud de permisos, captura de imágenes, mensajes, alertas, entre otros.
 
 Incorpora tus conocimientos! 🛸
