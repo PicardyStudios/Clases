@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Clases</string>
+    <string name="navigation_drawer_open">Abrir menu</string>
+    <string name="navigation_drawer_close">Cerrar menu</string>
+    <string name="nav_header_title">Cliente Amigo</string>
+    <string name="nav_header_subtitle">ClienteAmigo.com.ar</string>
+    <string name="nav_header_desc">Navegacion</string>
+    <string name="action_settings">Opciones</string>
+
+    <string name="close_prompt">Esta seguro que desea cerrar la app?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+
+    <string name="tapAgain">Presione otra vez para salir.</string>
+    <string name="no_internet">No hay conexión.</string>
+    <string name="connect">Conectar</string>
+
+    <!-- redes sociales -->
+    <string name="facebook_url">https://www.facebook.com/mccltdbangladesh/</string>
+    <string name="youtube_url">https://www.youtube.com/channel/UCEJ4qp3dJMKJ1xunz-Mr5wA</string>
+    <string name="twitter_user_id">twitter://user?user_id=742143</string> <!-- find your user id from here: http://gettwitterid.com/  -->
+    <string name="twitter_url">https://twitter.com/BBCWorld</string>
+    <string name="instagram_url">https://plus.google.com/+BBCNews</string>
+
+    <string name="install_messenger">Instalar Facebook Messenger</string>
+    <string name="share_text">Información al instante con:</string>
+    <string name="send_to">Enviar a: </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
