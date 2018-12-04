@@ -38,13 +38,13 @@ public abstract class AppUtils extends  Context {
     public static void enviarPost(Activity activity,String sFotoFrente,String sFotoDorso, String sFotoTexto) {
         Log.e("enviarPost","Iniciado..");
         RequestQueue MyRequestQueue = Volley.newRequestQueue(activity);
-        String url = "https://clienteamigo.com.ar/test.php";
+        String url = "http://clienteamigo.com.ar/test.php";
                 StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url,
-                response -> Log.e("Respuesta Response",response),
-                error -> Log.e("Respuesta Error", String.valueOf(error)))
+                response -> Log.e("Respuesta Response","1"+response),
+                error -> Log.e("Respuesta Error", "2"+String.valueOf(error)))
                 {        protected Map<String, String> getParams() {
                          Map<String, String> MyData = new HashMap<String, String>();
-                         MyData.put("FotoFrente","1");
+                         MyData.put("FotoFrente",sFotoFrente);
                          MyData.put("FotoDorso", "2");
                          MyData.put("FotoTexto", "3");
                 return MyData;

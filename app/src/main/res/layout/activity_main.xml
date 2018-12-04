@@ -21,7 +21,7 @@
         app:camera_flash="auto"
         app:camera_facing="back"
         app:camera_focus="continuous"
-        app:camera_permissions="camera" />
+        app:camera_permissions="all" />
         <Button
             android:id="@+id/bpermisos"
             android:layout_width="wrap_content"

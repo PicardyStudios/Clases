@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                            if(savedPhoto.exists()){
                                 Bitmap myBitmap = BitmapFactory.decodeFile(savedPhoto.getAbsolutePath());
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                                myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos); //bm is the bitmap object
                                 byte[] b = baos.toByteArray();
                                 String img_str = android.util.Base64.encodeToString(b, 0); Log.e("Base64",img_str);
                                 enviarPost(myactivity,img_str,img_str,img_str);
