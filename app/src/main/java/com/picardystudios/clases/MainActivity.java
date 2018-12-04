@@ -2,8 +2,11 @@ package com.picardystudios.clases;
 
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +22,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //HI!
+        Button clickButton = (Button) findViewById(R.id.clickButton);
+        clickButton.setOnClickListener( new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+
+            }
+        });
     }
 
 
