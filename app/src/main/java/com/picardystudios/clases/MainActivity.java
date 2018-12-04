@@ -6,20 +6,27 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.camerakit.CameraKitView;
 import com.picardystudios.clases.Util.CameraUtils;
 import com.picardystudios.clases.Util.ImagePath_MarshMallow;
 import com.picardystudios.clases.Util.PermissionUtils;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,12 +37,7 @@ import static com.picardystudios.clases.Util.PermissionUtils.isPermissionGranted
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    public static final int PERMISSION_REQUEST_CODE = 114;//request code for Camera and External Storage permission
-    private static final int CAMERA_REQUEST_CODE = 133;//request code for capture image
-
-    private Uri fileUri = null;//Uri to capture image
-    private String getImageUrl = "";
-    private ImageView imageView;
+    private CameraKitView cameraKitView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,59 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        imageView = (ImageView) findViewById(R.id.captured_photo);
+        cameraKitView = findViewById(R.id.camera);
+
+        cameraKitView.setGestureListener(new CameraKitView.GestureListener() {
+            @Override
+            public void onTap(CameraKitView cameraKitView, float v, float v1) {
+
+            }
+
+            @Override
+            public void onLongTap(CameraKitView cameraKitView, float v, float v1) {
+
+            }
+
+            @Override
+            public void onDoubleTap(CameraKitView cameraKitView, float v, float v1) {
+
+
+                cameraKitView.captureImage(new CameraKitView.ImageCallback() {
+                    @Override
+                    public void onImage(CameraKitView cameraKitView, final byte[] capturedImage) {
+                        File savedPhoto = new File(Environment.getExternalStorageDirectory(), "photo.jpg");
+                        try {
+                            FileOutputStream outputStream = new FileOutputStream(savedPhoto.getPath());
+                            outputStream.write(capturedImage);
+                            outputStream.close();
+                            Log.e("Captura","OK! "+String.valueOf(savedPhoto));
+
+
+                           if(savedPhoto.exists()){
+
+                                Bitmap myBitmap = BitmapFactory.decodeFile(savedPhoto.getAbsolutePath());
+
+                                ImageView myImage = (ImageView) findViewById(R.id.captured_photo);
+
+                                myImage.setImageBitmap(myBitmap);
+
+                            }
+
+                        } catch (java.io.IOException e) {
+                            e.printStackTrace(); Log.e("Camera Exception",e.toString());
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onPinch(CameraKitView cameraKitView, float v, float v1, float v2) {
+
+            }
+        });
+
+
         Button clickButton = (Button) findViewById(R.id.bpermisos);
         clickButton.setOnClickListener((View v) -> {
              if (PermissionUtils.isPermissionGranted(this, new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},101)) {
@@ -55,101 +109,39 @@ public class MainActivity extends AppCompatActivity {
 
         Button clickCapture = (Button) findViewById(R.id.bfotos);
         clickCapture.setOnClickListener((View v) -> {
-            if (isDeviceSupportCamera())
-                captureImage();
+
 
         });
     }
 
 
-
-
-
-
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        cameraKitView.onStart();
+    }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case CAMERA_REQUEST_CODE:
-                try {
-                    //When image is captured successfully
-                    if (resultCode == RESULT_OK) {
-
-                        //Check if device SDK is greater than 22 then we get the actual image path via below method
-                        if (Build.VERSION.SDK_INT > 22)
-                            getImageUrl = ImagePath_MarshMallow.getPath(MainActivity.this, fileUri);
-                        else
-                            //else we will get path directly
-                            getImageUrl = fileUri.getPath();
-
-
-                        //After image capture show captured image over image view
-                        showCapturedImage();
-                    } else
-                        Toast.makeText(this, "Cancelado..", Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                break;
-
-        }
+    protected void onResume() {
+        super.onResume();
+        cameraKitView.onResume();
     }
 
-
-
-
-
-
-    // Checking camera supportability
-    private boolean isDeviceSupportCamera() {
-        if (getPackageManager().hasSystemFeature(
-                PackageManager.FEATURE_CAMERA))
-            return true;
-        else {
-            Toast.makeText(MainActivity.this, "No hay camara disponible", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-    }
-
-    /*  Capture Image Method  */
-    private void captureImage() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//Start intent with Action_Image_Capture
-        fileUri = CameraUtils.getOutputMediaFileUri(this);//get fileUri from CameraUtils
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);//Send fileUri with intent
-        startActivityForResult(intent, CAMERA_REQUEST_CODE);//start activity for result with CAMERA_REQUEST_CODE
-    }
-
-    /*  Show Captured over ImageView  */
-    private void showCapturedImage() {
-        if (!getImageUrl.equals("") && getImageUrl != null)
-            imageView.setImageBitmap(CameraUtils.convertImagePathToBitmap(getImageUrl, false));
-        else
-            Toast.makeText(this, "Error en la captura", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Here we store the file url as it will be null after returning from camera
-     * app
-     */
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        // save file url in bundle as it will be null on scren orientation
-        // changes
-        outState.putParcelable("file_uri", fileUri);
+    protected void onPause() {
+        cameraKitView.onPause();
+        super.onPause();
     }
 
-    /*
-     * Here we restore the fileUri again
-     */
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        // get the file url
-        fileUri = savedInstanceState.getParcelable("file_uri");
+    protected void onStop() {
+        cameraKitView.onStop();
+        super.onStop();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        cameraKitView.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
