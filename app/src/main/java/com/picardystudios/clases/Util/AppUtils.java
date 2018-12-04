@@ -1,6 +1,5 @@
 package com.picardystudios.clases.Util;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,14 +8,12 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 
-import android.net.http.RequestQueue;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
@@ -29,8 +26,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import androidx.core.app.ActivityCompat;
-
 
 /**
  * Created by Ashiq on 4/12/2017.
@@ -41,39 +36,24 @@ public abstract class AppUtils extends  Context {
     private static long backPressed = 0;
 
     public static void enviarPost(Activity activity,String sFotoFrente,String sFotoDorso, String sFotoTexto) {
-        com.android.volley.RequestQueue MyRequestQueue = Volley.newRequestQueue(activity);
+        Log.e("enviarPost","Iniciado..");
+        RequestQueue MyRequestQueue = Volley.newRequestQueue(activity);
         String url = "https://clienteamigo.com.ar/test.php";
-        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //This code is executed if the server responds, whether or not the response contains data.
-                //The String 'response' contains the server's response.
-                Log.e("Respuesta Response",response);
-
-            }
-        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Respuesta Error", String.valueOf(error));
-                //This code is executed if there is an error.}
-
-
-            }
-        }) {
-            protected Map<String, String> getParams() {
-                Map<String, String> MyData = new HashMap<String, String>();
-
-                MyData.put("FotoFrente",sFotoFrente);
-                MyData.put("FotoDorso", sFotoDorso);
-                MyData.put("FotoTexto", sFotoTexto);
-
-
+                StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url,
+                response -> Log.e("Respuesta Response",response),
+                error -> Log.e("Respuesta Error", String.valueOf(error)))
+                {        protected Map<String, String> getParams() {
+                         Map<String, String> MyData = new HashMap<String, String>();
+                         MyData.put("FotoFrente","1");
+                         MyData.put("FotoDorso", "2");
+                         MyData.put("FotoTexto", "3");
                 return MyData;
             }
         };
 
 
         MyRequestQueue.add(MyStringRequest);
+        Log.e("enviarPost","End?..");
     }
     public static void tapToExit(Activity activity) {
         if (backPressed + 2500 > System.currentTimeMillis()) {
@@ -192,25 +172,7 @@ public abstract class AppUtils extends  Context {
         });
     }
 
-    public void makePhoneCall(Activity activity, String phoneNumber) {
-        if (phoneNumber != null) {
-            Intent callIntent = new Intent(Intent.ACTION_CALL);
-            callIntent.setData(Uri.parse("tel:" + phoneNumber));
-            if (PermissionUtils.isPermissionGranted(activity, PermissionUtils.CALL_PERMISSIONS, PermissionUtils.REQUEST_CALL)) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                activity.startActivity(callIntent);
-            }
-        }
-    }
+
 
     public static void sendSMS(Activity activity, String phoneNumber, String text) {
         if (phoneNumber != null) {
