@@ -3,6 +3,7 @@ package com.picardystudios.clases.Util;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -33,10 +34,10 @@ public class PermissionUtils {
         if (permissions != null && permissions.length > 0) {
             for (String permission : permissions) {
                 if ((ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED)) {
-                    requirePermission = true;
+                    requirePermission = true; Log.e(permission,"No aceptado");
                     break;
+                } else { Log.e(permission,"aceptado"); }
                 }
-            }
         }
 
         if (requirePermission) {
@@ -59,5 +60,14 @@ public class PermissionUtils {
         }
         return allGranted;
     }
+
+
+
+
+
+
+
+
+
 
 }

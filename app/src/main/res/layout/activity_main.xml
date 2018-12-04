@@ -11,7 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/captured_photo"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:contentDescription="Capture Image Holder"
+            android:layout_alignParentStart="true" />
         <Button
             android:id="@+id/bpermisos"
             android:layout_width="wrap_content"
