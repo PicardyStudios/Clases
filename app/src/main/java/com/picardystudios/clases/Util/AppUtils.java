@@ -9,16 +9,25 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 
+import android.net.http.RequestQueue;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.picardystudios.clases.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import androidx.core.app.ActivityCompat;
 
@@ -31,6 +40,41 @@ public abstract class AppUtils extends  Context {
 
     private static long backPressed = 0;
 
+    public static void enviarPost(Activity activity,String sFotoFrente,String sFotoDorso, String sFotoTexto) {
+        com.android.volley.RequestQueue MyRequestQueue = Volley.newRequestQueue(activity);
+        String url = "https://clienteamigo.com.ar/test.php";
+        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+                Log.e("Respuesta Response",response);
+
+            }
+        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Respuesta Error", String.valueOf(error));
+                //This code is executed if there is an error.}
+
+
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+
+                MyData.put("FotoFrente",sFotoFrente);
+                MyData.put("FotoDorso", sFotoDorso);
+                MyData.put("FotoTexto", sFotoTexto);
+
+
+                return MyData;
+            }
+        };
+
+
+        MyRequestQueue.add(MyStringRequest);
+    }
     public static void tapToExit(Activity activity) {
         if (backPressed + 2500 > System.currentTimeMillis()) {
             activity.finish();

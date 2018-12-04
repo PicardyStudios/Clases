@@ -2,6 +2,7 @@ package com.picardystudios.clases;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,11 +26,13 @@ import com.picardystudios.clases.Util.CameraUtils;
 import com.picardystudios.clases.Util.ImagePath_MarshMallow;
 import com.picardystudios.clases.Util.PermissionUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import static com.picardystudios.clases.Util.AppUtils.enviarPost;
 import static com.picardystudios.clases.Util.AppUtils.showToast;
 import static com.picardystudios.clases.Util.PermissionUtils.isPermissionGranted;
 
@@ -37,7 +40,7 @@ import static com.picardystudios.clases.Util.PermissionUtils.isPermissionGranted
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private CameraKitView cameraKitView;
+    private CameraKitView cameraKitView; Activity myactivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setVmPolicy(builder.build());
 
         cameraKitView = findViewById(R.id.camera);
+        myactivity = this;
 
         cameraKitView.setGestureListener(new CameraKitView.GestureListener() {
             @Override
@@ -76,11 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
 
                            if(savedPhoto.exists()){
-
                                 Bitmap myBitmap = BitmapFactory.decodeFile(savedPhoto.getAbsolutePath());
-
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                                byte[] b = baos.toByteArray();
+                                String img_str = android.util.Base64.encodeToString(b, 0); Log.e("Base64",img_str);
+                                enviarPost(myactivity,img_str,img_str,img_str);
                                 ImageView myImage = (ImageView) findViewById(R.id.captured_photo);
-
                                 myImage.setImageBitmap(myBitmap);
 
                             }

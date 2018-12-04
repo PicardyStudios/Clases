@@ -17,6 +17,7 @@
             android:layout_height="200dp"
             android:adjustViewBounds="true"
             android:keepScreenOn="true"
+            app:camera_imageMegaPixels="2"
         app:camera_flash="auto"
         app:camera_facing="back"
         app:camera_focus="continuous"
