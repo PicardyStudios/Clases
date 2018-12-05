@@ -7,41 +7,94 @@
     android:layout_height="match_parent"
     android:padding="0dp">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <com.camerakit.CameraKitView
-            android:id="@+id/camera"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:adjustViewBounds="true"
-            android:keepScreenOn="true"
-            app:camera_imageMegaPixels="2"
-        app:camera_flash="auto"
-        app:camera_facing="back"
-        app:camera_focus="continuous"
-        app:camera_permissions="all" />
-        <Button
-            android:id="@+id/bpermisos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pedir Permisos" />
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/bfotos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SacarFfoto" />
-
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/captured_photo"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:contentDescription="Capture Image Holder"
-            android:layout_alignParentStart="true" />
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linear1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/captured_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:visibility="invisible"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:contentDescription="Capture Image Holder" />
+
+                <com.camerakit.CameraKitView
+                    android:id="@+id/camera"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:adjustViewBounds="true"
+                    android:keepScreenOn="true"
+                    app:camera_facing="front"
+                    app:camera_flash="auto"
+                    app:camera_focus="continuous"
+                    app:camera_imageMegaPixels="2"
+                    app:camera_aspectRatio="4.1"
+                    app:camera_permissions="all">
+
+                </com.camerakit.CameraKitView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sacate una #Selfie"
+                        android:textColor="@color/design_default_color_error"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:text="Haga doble tap sobre la imagen para capturar."
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_margin="10dp"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:visibility="invisible">
+
+                <Button
+                    android:id="@+id/bfotos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_gravity="right"
+                    android:gravity="end"
+                    android:text="Continuar"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

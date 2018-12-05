@@ -3,27 +3,18 @@ package com.picardystudios.clases;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
-
+import android.widget.LinearLayout;
 
 import com.camerakit.CameraKitView;
-import com.picardystudios.clases.Util.CameraUtils;
-import com.picardystudios.clases.Util.ImagePath_MarshMallow;
 import com.picardystudios.clases.Util.PermissionUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -34,13 +25,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import static com.picardystudios.clases.Util.AppUtils.enviarPost;
 import static com.picardystudios.clases.Util.AppUtils.showToast;
-import static com.picardystudios.clases.Util.PermissionUtils.isPermissionGranted;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private CameraKitView cameraKitView; Activity myactivity;
+    CameraKitView cameraSelfie;     LinearLayout linear2;   LinearLayout linear3;   LinearLayout linear4; ImageView myImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
+        cameraSelfie = (CameraKitView) findViewById(R.id.camera);
+        myImage = (ImageView) findViewById(R.id.captured_photo);
+        linear2= (LinearLayout) findViewById(R.id.linear2);
+        linear3= (LinearLayout) findViewById(R.id.linear2);
+        linear4= (LinearLayout) findViewById(R.id.linear2);
 
         cameraKitView = findViewById(R.id.camera);
         myactivity = this;
@@ -75,10 +71,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             FileOutputStream outputStream = new FileOutputStream(savedPhoto.getPath());
                             outputStream.write(capturedImage);
-                            outputStream.close();
-                            Log.e("Captura","OK! "+String.valueOf(savedPhoto));
-
-
+                            outputStream.close();    Log.e("Captura","OK! "+String.valueOf(savedPhoto));
                            if(savedPhoto.exists()){
                                 Bitmap myBitmap = BitmapFactory.decodeFile(savedPhoto.getAbsolutePath());
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -86,8 +79,9 @@ public class MainActivity extends AppCompatActivity {
                                 byte[] b = baos.toByteArray();
                                 String img_str = android.util.Base64.encodeToString(b, 0); Log.e("Base64",img_str);
                                 enviarPost(myactivity,img_str,img_str,img_str);
-                                ImageView myImage = (ImageView) findViewById(R.id.captured_photo);
-                                myImage.setImageBitmap(myBitmap);
+                                myImage.setImageBitmap(myBitmap);  myImage.getLayoutParams().height = 400; myImage.setVisibility(View.VISIBLE);
+                               cameraSelfie.getLayoutParams().height = 1;  cameraSelfie.setVisibility(View.INVISIBLE);
+                               linear2.setVisibility(View.VISIBLE);
 
                             }
 
@@ -106,17 +100,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Button clickButton = (Button) findViewById(R.id.bpermisos);
-        clickButton.setOnClickListener((View v) -> {
+
              if (PermissionUtils.isPermissionGranted(this, new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},101)) {
                 showToast(this,"Permisos aceptados");
             } else { showToast(this,"Debe aceptar los permisos para continuar..."); }
-        });
 
-        Button clickCapture = (Button) findViewById(R.id.bfotos);
-        clickCapture.setOnClickListener((View v) -> {
+        myImage.setOnClickListener((View v) -> {
 
-
+            myImage.getLayoutParams().height = 1; myImage.setVisibility(View.INVISIBLE);
+            cameraSelfie.getLayoutParams().height = 400;  cameraSelfie.setVisibility(View.VISIBLE);
+            linear2.setVisibility(View.INVISIBLE);
         });
     }
 
