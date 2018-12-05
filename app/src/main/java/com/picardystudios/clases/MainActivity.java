@@ -49,55 +49,7 @@ public class MainActivity extends AppCompatActivity {
         cameraKitView = findViewById(R.id.camera);
         myactivity = this;
 
-        cameraKitView.setGestureListener(new CameraKitView.GestureListener() {
-            @Override
-            public void onTap(CameraKitView cameraKitView, float v, float v1) {
 
-            }
-
-            @Override
-            public void onLongTap(CameraKitView cameraKitView, float v, float v1) {
-
-            }
-
-            @Override
-            public void onDoubleTap(CameraKitView cameraKitView, float v, float v1) {
-
-
-                cameraKitView.captureImage(new CameraKitView.ImageCallback() {
-                    @Override
-                    public void onImage(CameraKitView cameraKitView, final byte[] capturedImage) {
-                        File savedPhoto = new File(Environment.getExternalStorageDirectory(), "photo.jpg");
-                        try {
-                            FileOutputStream outputStream = new FileOutputStream(savedPhoto.getPath());
-                            outputStream.write(capturedImage);
-                            outputStream.close();    Log.e("Captura","OK! "+String.valueOf(savedPhoto));
-                           if(savedPhoto.exists()){
-                                Bitmap myBitmap = BitmapFactory.decodeFile(savedPhoto.getAbsolutePath());
-                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos); //bm is the bitmap object
-                                byte[] b = baos.toByteArray();
-                                String img_str = android.util.Base64.encodeToString(b, 0); Log.e("Base64",img_str);
-                                enviarPost(myactivity,img_str,img_str,img_str);
-                                myImage.setImageBitmap(myBitmap);  myImage.getLayoutParams().height = 400; myImage.setVisibility(View.VISIBLE);
-                               cameraSelfie.getLayoutParams().height = 1;  cameraSelfie.setVisibility(View.INVISIBLE);
-                               linear2.setVisibility(View.VISIBLE);
-
-                            }
-
-                        } catch (java.io.IOException e) {
-                            e.printStackTrace(); Log.e("Camera Exception",e.toString());
-                        }
-                    }
-                });
-
-            }
-
-            @Override
-            public void onPinch(CameraKitView cameraKitView, float v, float v1, float v2) {
-
-            }
-        });
 
 
 
@@ -107,11 +59,58 @@ public class MainActivity extends AppCompatActivity {
 
         myImage.setOnClickListener((View v) -> {
 
-            myImage.getLayoutParams().height = 1; myImage.setVisibility(View.INVISIBLE);
-            cameraSelfie.getLayoutParams().height = 400;  cameraSelfie.setVisibility(View.VISIBLE);
-            linear2.setVisibility(View.INVISIBLE);
+            myImage.setVisibility(View.GONE); cameraSelfie.onResume(); cameraKitView.setVisibility(View.VISIBLE); linear2.setVisibility(View.GONE);
+            cameraKitView.setGestureListener(new CameraKitView.GestureListener() {
+                @Override public void onTap(CameraKitView cameraKitView, float v, float v1) {  captureSave(cameraKitView,v,v1);  }
+                @Override public void onLongTap(CameraKitView cameraKitView, float v, float v1) {   }
+                @Override public void onDoubleTap(CameraKitView cameraKitView, float v, float v1) {  }
+                @Override public void onPinch(CameraKitView cameraKitView, float v, float v1, float v2) {  }
+            });
         });
+
+
+        cameraKitView.setGestureListener(new CameraKitView.GestureListener() {
+            @Override public void onTap(CameraKitView cameraKitView, float v, float v1) {  captureSave(cameraKitView,v,v1);  }
+            @Override public void onLongTap(CameraKitView cameraKitView, float v, float v1) {   }
+            @Override public void onDoubleTap(CameraKitView cameraKitView, float v, float v1) {  }
+            @Override public void onPinch(CameraKitView cameraKitView, float v, float v1, float v2) {  }
+        });
+
     }
+
+
+
+
+        public void captureSave(CameraKitView cameraKitView, float v, float v1){
+
+            cameraKitView.captureImage(new CameraKitView.ImageCallback() {
+                @Override
+                public void onImage(CameraKitView cameraKitView, final byte[] capturedImage) {
+                    File savedPhoto = new File(Environment.getExternalStorageDirectory(), "photo.jpg");
+                    try {
+                        FileOutputStream outputStream = new FileOutputStream(savedPhoto.getPath());
+                        outputStream.write(capturedImage);
+                        outputStream.close();    Log.e("Captura","OK! "+String.valueOf(savedPhoto));
+                        if(savedPhoto.exists()){
+                            Bitmap myBitmap = BitmapFactory.decodeFile(savedPhoto.getAbsolutePath());
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos); //bm is the bitmap object
+                            byte[] b = baos.toByteArray();
+                            String img_str = android.util.Base64.encodeToString(b, 0); Log.e("Base64",img_str);
+                            enviarPost(myactivity,img_str,img_str,img_str);
+                            myImage.setImageBitmap(myBitmap);
+                            myImage.setVisibility(View.VISIBLE);
+                            cameraKitView.setVisibility(View.GONE);
+                            linear2.setVisibility(View.VISIBLE);
+
+                        }
+
+                    } catch (java.io.IOException e) {
+                        e.printStackTrace(); Log.e("Camera Exception",e.toString());
+                    }
+                }
+            });
+        }
 
 
     @Override
@@ -143,4 +142,6 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         cameraKitView.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+
 }
