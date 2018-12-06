@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
+    lintOptions {
+        checkReleaseBuilds false
+    }
     signingConfigs {
         config {
             keyAlias 'PicardyStudios'
@@ -11,11 +14,13 @@ android {
     }
     compileSdkVersion 28
     useLibrary 'org.apache.http.legacy'
+
     defaultConfig {
         applicationId "com.picardystudios.clases"
         minSdkVersion 19
         targetSdkVersion 28
         multiDexEnabled true
+
         versionCode 1
         versionName "1.1.3.12.18"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

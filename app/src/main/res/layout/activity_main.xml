@@ -86,22 +86,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/separador"
-                 />
+                />
 
             <LinearLayout
                 android:id="@+id/linear2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_margin="10dp"
-                android:gravity="right"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:visibility="visible">
 
 
                 <TextView
                     android:id="@+id/textView6"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Datos Personales"
                     android:textColor="#FF02203E"
@@ -114,6 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:autofillHints=""
                     android:ems="10"
                     android:hint="Apellidos"
                     android:inputType="textPersonName"
@@ -156,6 +156,26 @@
                         android:textColor="#000000" />
                 </LinearLayout>
 
+
+                <ImageView
+                    android:id="@+id/separador2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/separador"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dirección Postal"
+                    android:textColor="#FF02203E"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
                 <EditText
                     android:id="@+id/direccion"
                     android:layout_width="match_parent"
@@ -184,6 +204,16 @@
                     android:entries="@array/provincias_select"
                     android:textColor="#000000"
                     android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/separador3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/separador"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
 
                 <TextView
                     android:id="@+id/textView5"
@@ -235,20 +265,49 @@
                     android:textColor="#000000" />
 
 
-                <TextView
-                    android:id="@+id/resultadoScan"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/separador4"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="#000000" />
+                    android:src="@drawable/separador"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
 
+                <TextView
+                    android:id="@+id/corroborarTitulo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Corroborar Identidad"
+                    android:textColor="#FF02203E"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
 
+                <com.camerakit.CameraKitView
+                    android:id="@+id/camFrente"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+
+                    android:adjustViewBounds="true"
+                    android:fillAfter="true"
+                    android:fillEnabled="true"
+                    android:keepScreenOn="true"
+                    app:camera_facing="front"
+                    app:camera_flash="auto"
+                    app:camera_focus="continuous"
+                    app:camera_imageMegaPixels="2"
+                    app:camera_permissions="all">
+
+                </com.camerakit.CameraKitView>
                 <ImageView
                     android:id="@+id/imgFrente"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:onClick="ClickDNI"></ImageView>
+                    android:layout_height="300dp"
+                    android:layout_marginTop="-300dp"
+                    android:visibility="invisible"
+                    android:onClick="ClickDNI"/>
 
                 <Button
                     android:id="@+id/frenteDNI"
@@ -259,10 +318,30 @@
                     android:text="Frente del DNI" />
 
 
+                <com.camerakit.CameraKitView
+                    android:id="@+id/camDorso"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+
+                    android:adjustViewBounds="true"
+                    android:fillAfter="true"
+                    android:fillEnabled="true"
+                    android:keepScreenOn="true"
+                    app:camera_facing="front"
+                    app:camera_flash="auto"
+                    app:camera_focus="continuous"
+                    app:camera_imageMegaPixels="2"
+                    app:camera_permissions="all">
+
+                </com.camerakit.CameraKitView>
+
                 <ImageView
                     android:id="@+id/imgDorso"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"></ImageView>
+                    android:layout_height="150dp"
+                    android:layout_marginTop="-300dp"
+                    android:visibility="invisible"/>
 
                 <Button
                     android:id="@+id/dorsoDNI"
@@ -296,10 +375,29 @@
                     android:text="..al final del texto, por favor firme y aclare la misma, junto a su DNI."
                     android:textColor="#000000" />
 
+                <com.camerakit.CameraKitView
+                    android:id="@+id/camTexto"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+
+                    android:adjustViewBounds="true"
+                    android:fillAfter="true"
+                    android:fillEnabled="true"
+                    android:keepScreenOn="true"
+                    app:camera_facing="back"
+                    app:camera_flash="auto"
+                    app:camera_focus="continuous"
+                    app:camera_imageMegaPixels="2"
+                    app:camera_permissions="all">
+
+                </com.camerakit.CameraKitView>
                 <ImageView
                     android:id="@+id/imgTexto"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"></ImageView>
+                    android:layout_height="150dp"
+                    android:layout_marginTop="-300dp"
+                    android:visibility="invisible"></ImageView>
 
                 <Button
                     android:id="@+id/fototexto"

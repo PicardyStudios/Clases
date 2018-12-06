@@ -3,17 +3,13 @@ package com.picardystudios.clases;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +24,6 @@ import com.camerakit.CameraKitView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.picardystudios.clases.Util.PermissionUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -45,21 +40,17 @@ import static com.picardystudios.clases.Util.AppUtils.showToast;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private CameraKitView cameraKitView; Activity myactivity;
+    private CameraKitView cameraKitView;
+    private CameraKitView cameraFrente;
+    private CameraKitView cameraDorso;
+    private CameraKitView cameraTexto;
+    Activity myactivity;
     CameraKitView cameraSelfie;     LinearLayout linear2;   LinearLayout linear3;   LinearLayout linear4; ImageView myImage;
-    public final int CUSTOMIZED_REQUEST_CODE = 0x0000ffff;
+
     String sResult;       String DNI = null;    String TarjetaC = null; ImageView laimagen;
     EditText nombres; EditText apellidos; EditText documento; EditText nacimiento; EditText direccion;
     EditText localidad; Spinner provincia; EditText telfijo; EditText telmovil; EditText email; TextView textoapapel; TextView textoapapelD;
     int TAKE_PHOTO_CODE = 0;    public static int count = 0;    String sFotoDorso = ""; String sFotoFrente= ""; String sFotoTexto= "";
-
-    private static final int CAMERA_REQUEST = 1888;
-    private static final int CAMERA_REQUESTWO = 1889;
-    private static final int CAMERA_REQUESTHREE = 1890;
-    Uri mImageUri; File photo;     Bitmap bitmap;   ImageView mimageView;
-    Uri mImageUriD; File photoD;     Bitmap bitmapD;   ImageView mimageViewD;
-    Uri mImageUriU; File photoU;     Bitmap bitmapU;   ImageView mimageViewU;
-    String PalabraUno; String PalabraDos; String PalabraTres;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
         linear4= (LinearLayout) findViewById(R.id.linear2);
 
         cameraKitView = findViewById(R.id.camera);
+        cameraFrente = findViewById(R.id.camFrente);
+        cameraDorso = findViewById(R.id.camDorso);
+        cameraTexto = findViewById(R.id.camTexto);
         myactivity = this;
 
 
@@ -109,44 +103,6 @@ public class MainActivity extends AppCompatActivity {
             @Override public void onLongTap(CameraKitView cameraKitView, float v, float v1) {   }
             @Override public void onDoubleTap(CameraKitView cameraKitView, float v, float v1) {  }
             @Override public void onPinch(CameraKitView cameraKitView, float v, float v1, float v2) {  }
-        });
-
-
-
-        Button capturedorso = (Button) findViewById(R.id.dorsoDNI);
-        capturedorso.setOnClickListener(v -> {
-
-
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            // Set up file to save image into.
-            StrictMode.VmPolicy.Builder builder1 = new StrictMode.VmPolicy.Builder();
-            StrictMode.setVmPolicy(builder1.build());
-
-            try {  photoD = createTemporaryFile("dorso", ".jpg");  }
-            catch(Exception e)  { Toast.makeText(getApplicationContext(), "Error al guardar la foto, revise el espacio de su dispositivo.", Toast.LENGTH_LONG); }
-            mImageUriD = Uri.fromFile(photoD);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUriD);
-            startActivityForResult(intent, CAMERA_REQUESTWO);
-
-
-        });
-
-
-        Button capturetexto = (Button) findViewById(R.id.fototexto);
-        capturetexto.setOnClickListener(v -> {
-
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            // Set up file to save image into.
-            StrictMode.VmPolicy.Builder builder12 = new StrictMode.VmPolicy.Builder();
-            StrictMode.setVmPolicy(builder12.build());
-
-            try {  photo = createTemporaryFile("MutualCentral_Texto", ".jpg");  }
-            catch(Exception e)  { Toast.makeText(getApplicationContext(), "Please check SD card! Image shot is impossible!", Toast.LENGTH_LONG); }
-            mImageUri = Uri.fromFile(photo);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
-            // And away we go!
-            startActivityForResult(intent, CAMERA_REQUESTHREE);
-
         });
 
     }
@@ -307,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         cameraKitView.onStart();
+        cameraTexto.onStart();
     }
 
     @Override
@@ -333,143 +290,5 @@ public class MainActivity extends AppCompatActivity {
         cameraKitView.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-
-    protected void onActivityResult ( int requestCode, int resultCode, Intent data) {
-        Log.e("requestCode", String.valueOf(requestCode));
-        Log.e("resultCode", String.valueOf(resultCode));
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-            if (requestCode == 49374) {
-
-                switch (requestCode) {
-                    case CUSTOMIZED_REQUEST_CODE: {
-                        Toast.makeText(this, "Datos escaneados, aguarde...", Toast.LENGTH_LONG).show();
-                        // + requestCode
-                        sResult = String.valueOf(requestCode);
-                        ProcesaResultado();
-                        break;
-                    }
-                    default:
-                        break;
-            }
-
-                if (requestCode == CAMERA_REQUESTHREE && resultCode == RESULT_OK) {
-                    //Bitmap pmphoto = (Bitmap) data.getExtras().get("data");
-                    this.getContentResolver().notifyChange(mImageUri, null);
-                    ContentResolver cr = this.getContentResolver();
-                    try
-                    {
-                        bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
-                        bitmap = scaleBitmap(bitmap);
-                        Log.e("Bitmap", String.valueOf(bitmap));
-                        ByteArrayOutputStream stream=new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
-                        byte[] image=stream.toByteArray();
-
-                        mimageView = (ImageView) this.findViewById(R.id.imgTexto);
-
-                        mimageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 120, 120, false));
-                        //mimageView.setImageBitmap(pmphoto);
-                        sFotoTexto = android.util.Base64.encodeToString(image, 0);
-                        //mimageView.setImageBitmap(bitmap);
-                    }
-                    catch (Exception e)
-                    {
-                        Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
-                        Log.e("UriUri", "Failed to load", e);
-                    }
-
-                }
-
-            if (requestCode == CAMERA_REQUESTWO && resultCode == RESULT_OK) {
-                // Bitmap imphoto = (Bitmap) data.getExtras().get("data");
-
-
-                this.getContentResolver().notifyChange(mImageUriD, null);
-                ContentResolver cr = this.getContentResolver();
-                try
-                {
-                    bitmapD = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUriD);
-                    bitmapD = scaleBitmap(bitmapD);
-                    Log.e("Bitmap", String.valueOf(bitmapD));
-                    ByteArrayOutputStream stream=new ByteArrayOutputStream();
-                    bitmapD.compress(Bitmap.CompressFormat.JPEG, 70, stream);
-                    byte[] image=stream.toByteArray();
-
-                    mimageViewD = (ImageView) this.findViewById(R.id.imgDorso);
-
-                    mimageViewD.setImageBitmap(Bitmap.createScaledBitmap(bitmapD, 120, 120, false));
-                    //mimageViewD.setImageBitmap(imphoto);
-                    sFotoDorso = android.util.Base64.encodeToString(image, 0);
-                    //mimageView.setImageBitmap(bitmap);
-                }
-                catch (Exception e)
-                {
-                    Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
-                    Log.e("UriUri", "Failed to load", e);
-                }
-
-            }
-
-
-            if (result.getContents() == null) {
-                Log.d("MainActivity", "Verificación cancelada");
-                Toast.makeText(this, "Es necesario escanear su DNI para continuar.", Toast.LENGTH_LONG).show();
-                sResult = "Verificación cancelada";
-                finishActivity(requestCode); //EscanearCodigo();
-            } else {
-                Log.d("MainActivity", "Datos escaneados, aguarde...");
-                Toast.makeText(this, "Datos escaneados, aguarde...", Toast.LENGTH_LONG).show();
-                //+ result.getContents()
-                sResult = result.getContents();
-                finishActivity(requestCode);
-                ProcesaResultado();
-            }
-
-        }
-    }
-
-    private File createTemporaryFile(String part, String ext) throws Exception
-    {
-        File tempDir= Environment.getExternalStorageDirectory();
-        tempDir=new File(tempDir.getAbsolutePath()+"/.temp/");
-        if(!tempDir.exists())
-        {
-            tempDir.mkdirs();
-        }
-        File dis = File.createTempFile(part, ext, tempDir);
-        Log.e("Dis", String.valueOf(dis));
-        return File.createTempFile(part, ext, tempDir);
-    }
-
-    int maxWidth = 1280;
-    int maxHeight = 720;
-
-    private Bitmap scaleBitmap(Bitmap bm) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-
-        Log.v("Pictures", "Width and height are " + width + "--" + height);
-
-        if (width > height) {
-            // landscape
-            float ratio = (float) width / maxWidth;
-            width = maxWidth;
-            height = (int)(height / ratio);
-        } else if (height > width) {
-            // portrait
-            float ratio = (float) height / maxHeight;
-            height = maxHeight;
-            width = (int)(width / ratio);
-        } else {
-            // square
-            height = maxHeight;
-            width = maxWidth;
-        }
-
-        Log.v("Pictures", "after scaling Width and height are " + width + "--" + height);
-
-        bm = Bitmap.createScaledBitmap(bm, width, height, true);
-        return bm;
-    }
 
 }

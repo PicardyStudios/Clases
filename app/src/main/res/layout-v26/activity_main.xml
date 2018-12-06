@@ -99,14 +99,14 @@
 
 
                 <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/textView11"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
                     android:text="Datos Personales"
                     android:textColor="#FF02203E"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:visibility="visible" />
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/apellidos"
@@ -156,6 +156,26 @@
                         android:textColor="#000000" />
                 </LinearLayout>
 
+
+                <ImageView
+                    android:id="@+id/separador2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/separador"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="Dirección Postal"
+                    android:textColor="#FF02203E"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
                 <EditText
                     android:id="@+id/direccion"
                     android:layout_width="match_parent"
@@ -163,7 +183,7 @@
                     android:layout_margin="5dp"
                     android:hint="Dirección"
                     android:inputType="textMultiLine"
-                    android:lines="3"
+                    android:lines="2"
                     android:textColor="#000000" />
 
                 <EditText
@@ -184,6 +204,16 @@
                     android:entries="@array/provincias_select"
                     android:textColor="#000000"
                     android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/separador3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/separador"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
 
                 <TextView
                     android:id="@+id/textView5"
@@ -235,20 +265,56 @@
                     android:textColor="#000000" />
 
 
+                <ImageView
+                    android:id="@+id/separador4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/separador"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
                 <TextView
-                    android:id="@+id/resultadoScan"
+                    android:id="@+id/textView50"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="#000000" />
+                    android:paddingLeft="10dp"
+                    android:text="Documento de Identidad"
+                    android:textColor="#FF02203E"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
 
+                    <com.camerakit.CameraKitView
+                    android:id="@+id/camFrente"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+
+                    android:adjustViewBounds="true"
+                    android:fillAfter="true"
+                    android:fillEnabled="true"
+                    android:keepScreenOn="true"
+                    app:camera_facing="front"
+                    app:camera_flash="auto"
+                    app:camera_focus="continuous"
+                    app:camera_imageMegaPixels="2"
+                    app:camera_permissions="all">
+
+                </com.camerakit.CameraKitView>
                 <ImageView
                     android:id="@+id/imgFrente"
+                    android:src="@drawable/takefrente"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:onClick="ClickDNI"></ImageView>
+                    android:layout_height="300dp"
+                    android:layout_marginTop="-300dp"
+                    android:visibility="invisible"
+                    android:onClick="ClickDNI"/>
 
                 <Button
                     android:id="@+id/frenteDNI"
@@ -258,11 +324,38 @@
 
                     android:text="Frente del DNI" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                <com.camerakit.CameraKitView
+                    android:id="@+id/camDorso"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+
+                    android:adjustViewBounds="true"
+                    android:fillAfter="true"
+                    android:fillEnabled="true"
+                    android:keepScreenOn="true"
+                    app:camera_facing="front"
+                    app:camera_flash="auto"
+                    app:camera_focus="continuous"
+                    app:camera_imageMegaPixels="2"
+                    app:camera_permissions="all">
+
+                </com.camerakit.CameraKitView>
 
                 <ImageView
                     android:id="@+id/imgDorso"
+                    android:src="@drawable/takedorso"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"></ImageView>
+                    android:layout_height="300dp"
+                    android:layout_marginTop="-300dp"
+                    android:visibility="invisible"/>
 
                 <Button
                     android:id="@+id/dorsoDNI"
@@ -270,8 +363,24 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Dorso del DNI" />
+                </LinearLayout>
 
-                <TextView
+                <ImageView
+                    android:id="@+id/separador6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/separador"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
                     android:id="@+id/textView24"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -295,11 +404,46 @@
                     android:layout_margin="10dp"
                     android:text="..al final del texto, por favor firme y aclare la misma, junto a su DNI."
                     android:textColor="#000000" />
+                </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/imgTexto"
+                    android:id="@+id/separador9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/separador"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"></ImageView>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                <com.camerakit.CameraKitView
+                    android:id="@+id/camTexto"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+
+                    android:adjustViewBounds="true"
+                    android:fillAfter="true"
+                    android:fillEnabled="true"
+                    android:keepScreenOn="true"
+                    app:camera_facing="back"
+                    app:camera_flash="auto"
+                    app:camera_focus="continuous"
+                    app:camera_imageMegaPixels="2"
+                    app:camera_permissions="all">
+
+                </com.camerakit.CameraKitView>
+                <ImageView
+                    android:id="@+id/imgTexto"
+                    android:src="@drawable/taketexto"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="-300dp"
+                    android:visibility="invisible"></ImageView>
 
                 <Button
                     android:id="@+id/fototexto"
@@ -307,6 +451,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Sacar foto al texto" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/separador5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/separador"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
 
                 <TextView
                     android:id="@+id/textoapapelD"
