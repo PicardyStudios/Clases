@@ -59,13 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
         myImage.setOnClickListener((View v) -> {
 
-            myImage.setVisibility(View.GONE); cameraSelfie.onResume(); cameraKitView.setVisibility(View.VISIBLE); linear2.setVisibility(View.GONE);
-            cameraKitView.setGestureListener(new CameraKitView.GestureListener() {
-                @Override public void onTap(CameraKitView cameraKitView, float v, float v1) {  captureSave(cameraKitView,v,v1);  }
-                @Override public void onLongTap(CameraKitView cameraKitView, float v, float v1) {   }
-                @Override public void onDoubleTap(CameraKitView cameraKitView, float v, float v1) {  }
-                @Override public void onPinch(CameraKitView cameraKitView, float v, float v1, float v2) {  }
-            });
+            myImage.setVisibility(View.GONE);
+            //cameraSelfie.onResume(); cameraKitView.setVisibility(View.VISIBLE);
+            linear2.setVisibility(View.GONE);
+
         });
 
 
@@ -100,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                             enviarPost(myactivity,img_str,img_str,img_str);
                             myImage.setImageBitmap(myBitmap);
                             myImage.setVisibility(View.VISIBLE);
-                            cameraKitView.setVisibility(View.GONE);
+                            //cameraKitView.setVisibility(View.GONE);
                             linear2.setVisibility(View.VISIBLE);
 
                         }
