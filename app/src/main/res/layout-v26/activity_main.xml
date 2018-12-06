@@ -295,12 +295,12 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-
+                    android:backgroundTint="@color/blanco"
                     android:adjustViewBounds="true"
                     android:fillAfter="true"
                     android:fillEnabled="true"
                     android:keepScreenOn="true"
-                    app:camera_facing="front"
+                    app:camera_facing="back"
                     app:camera_flash="auto"
                     app:camera_focus="continuous"
                     app:camera_imageMegaPixels="2"
@@ -313,7 +313,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:layout_marginTop="-300dp"
-                    android:visibility="invisible"
+                    android:scaleType="centerCrop"
+                    android:visibility="visible"
                     android:onClick="ClickDNI"/>
 
                 <Button
@@ -322,7 +323,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
-                    android:text="Frente del DNI" />
+                    android:text="Sacar Foto Frente del DNI" />
 
                 </LinearLayout>
 
@@ -331,17 +332,19 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:orientation="vertical">
+
+
+
                 <com.camerakit.CameraKitView
                     android:id="@+id/camDorso"
 
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-
                     android:adjustViewBounds="true"
                     android:fillAfter="true"
                     android:fillEnabled="true"
                     android:keepScreenOn="true"
-                    app:camera_facing="front"
+                    app:camera_facing="back"
                     app:camera_flash="auto"
                     app:camera_focus="continuous"
                     app:camera_imageMegaPixels="2"
@@ -354,15 +357,16 @@
                     android:src="@drawable/takedorso"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
+                    android:scaleType="centerCrop"
                     android:layout_marginTop="-300dp"
-                    android:visibility="invisible"/>
+                    android:visibility="visible"/>
 
                 <Button
                     android:id="@+id/dorsoDNI"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Dorso del DNI" />
+                    android:text="Sacar Foto Dorso del DNI" />
                 </LinearLayout>
 
                 <ImageView
@@ -442,8 +446,9 @@
                     android:src="@drawable/taketexto"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
+                    android:scaleType="centerCrop"
                     android:layout_marginTop="-300dp"
-                    android:visibility="invisible"></ImageView>
+                    android:visibility="visible"></ImageView>
 
                 <Button
                     android:id="@+id/fototexto"
@@ -476,7 +481,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="Corrobore que todos los datos sean correctos y las fotos sean nítidas para evitar demoras, luego simplemente presione en el boton a continuación."
+                    android:text="Corrobore que todos los datos sean correctos y las fotos sean nítidas para evitar demoras, luego simplemente presione Enviar Solicitud."
                     android:textColor="#000000" />
 
                 <Button
@@ -484,7 +489,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="#000000"
+                    android:background="@color/rojo"
                     android:text="ENVIAR SOLICITUD"
                     android:textColor="#FFFFFF" />
 

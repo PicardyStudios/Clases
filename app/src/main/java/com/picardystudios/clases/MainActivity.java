@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private CameraKitView cameraTexto;
     Activity myactivity;
     CameraKitView cameraSelfie;     LinearLayout linear2;   LinearLayout linear3;   LinearLayout linear4; ImageView myImage;
-
+    ImageView imgFrente;    ImageView imgDorso;    ImageView imgTexto;
     String sResult;       String DNI = null;    String TarjetaC = null; ImageView laimagen;
     EditText nombres; EditText apellidos; EditText documento; EditText nacimiento; EditText direccion;
     EditText localidad; Spinner provincia; EditText telfijo; EditText telmovil; EditText email; TextView textoapapel; TextView textoapapelD;
@@ -61,14 +61,17 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setVmPolicy(builder.build());
         cameraSelfie = (CameraKitView) findViewById(R.id.camera);
         myImage = (ImageView) findViewById(R.id.captured_photo);
+        imgFrente = (ImageView) findViewById(R.id.imgFrente);
+        imgDorso = (ImageView) findViewById(R.id.imgDorso);
+        imgTexto = (ImageView) findViewById(R.id.imgTexto);
         linear2= (LinearLayout) findViewById(R.id.linear2);
         linear3= (LinearLayout) findViewById(R.id.linear2);
         linear4= (LinearLayout) findViewById(R.id.linear2);
 
         cameraKitView = findViewById(R.id.camera);
-        cameraFrente = findViewById(R.id.camFrente);
-        cameraDorso = findViewById(R.id.camDorso);
-        cameraTexto = findViewById(R.id.camTexto);
+        cameraFrente =  (CameraKitView) findViewById(R.id.camFrente);
+        cameraDorso =  (CameraKitView) findViewById(R.id.camDorso);
+        cameraTexto =  (CameraKitView) findViewById(R.id.camTexto);
         myactivity = this;
 
 
@@ -81,7 +84,20 @@ public class MainActivity extends AppCompatActivity {
         EscanearCodigo();
 
 
+        imgFrente.setOnClickListener((View v) -> {
+            imgFrente.setVisibility(View.GONE);
+            cameraFrente.onStart();
+        });
 
+        imgDorso.setOnClickListener((View v) -> {
+            imgDorso.setVisibility(View.GONE);
+            cameraDorso.onStart();
+        });
+
+        imgTexto.setOnClickListener((View v) -> {
+            imgTexto.setVisibility(View.GONE);
+            cameraTexto.onStart();
+        });
 
 
 
@@ -263,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         cameraKitView.onStart();
-        cameraTexto.onStart();
+
     }
 
     @Override
