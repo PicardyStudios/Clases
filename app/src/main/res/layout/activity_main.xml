@@ -282,30 +282,11 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:orientation="vertical">
-
-                    <com.camerakit.CameraKitView
-                        android:id="@+id/camFrente"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:backgroundTint="@color/blanco"
-                        android:adjustViewBounds="true"
-                        android:fillAfter="true"
-                        android:fillEnabled="true"
-                        android:keepScreenOn="true"
-                        app:camera_facing="back"
-
-                        app:camera_focus="continuous"
-                        app:camera_imageMegaPixels="2"
-                        app:camera_permissions="all">
-
-                    </com.camerakit.CameraKitView>
                     <ImageView
                         android:id="@+id/imgFrente"
                         android:src="@drawable/takefrente"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
-                        android:layout_marginTop="-300dp"
                         android:scaleType="centerCrop"
                         android:visibility="visible"
                         android:onClick="ClickDNI"/>
@@ -327,31 +308,12 @@
                     android:orientation="vertical">
 
 
-
-                    <com.camerakit.CameraKitView
-                        android:id="@+id/camDorso"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:adjustViewBounds="true"
-                        android:fillAfter="true"
-                        android:fillEnabled="true"
-                        android:keepScreenOn="true"
-                        app:camera_facing="back"
-
-                        app:camera_focus="continuous"
-                        app:camera_imageMegaPixels="2"
-                        app:camera_permissions="all">
-
-                    </com.camerakit.CameraKitView>
-
                     <ImageView
                         android:id="@+id/imgDorso"
                         android:src="@drawable/takedorso"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
                         android:scaleType="centerCrop"
-                        android:layout_marginTop="-300dp"
                         android:visibility="visible"/>
 
                     <Button
@@ -417,30 +379,12 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:orientation="vertical">
-                    <com.camerakit.CameraKitView
-                        android:id="@+id/camTexto"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="300dp"
-
-                        android:adjustViewBounds="true"
-                        android:fillAfter="true"
-                        android:fillEnabled="true"
-                        android:keepScreenOn="true"
-                        app:camera_facing="back"
-
-                        app:camera_focus="continuous"
-                        app:camera_imageMegaPixels="2"
-                        app:camera_permissions="all">
-
-                    </com.camerakit.CameraKitView>
                     <ImageView
                         android:id="@+id/imgTexto"
                         android:src="@drawable/taketexto"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
                         android:scaleType="centerCrop"
-                        android:layout_marginTop="-300dp"
                         android:visibility="visible"></ImageView>
 
                     <Button

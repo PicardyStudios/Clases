@@ -48,13 +48,11 @@ import static java.security.AccessController.getContext;
 public class MainActivity extends AppCompatActivity {
     Uri UriFrenteDNI; File photoFrenteDNI;     Bitmap bitmap;   ImageView mimageView;
     Uri UriDorsoDNI; File photoDorsoDNI;     Bitmap bitmapD;   ImageView mimageViewD;
-    Uri mImageUriU; File photoU;     Bitmap bitmapU;   ImageView mimageViewU;
-    private static final int CAMERA_REQUEST = 1888;    private static final int CAMERA_DORSODNI = 1889;    private static final int CAMERA_FRENTEDNI = 1890;
+    Uri UriTexto; File photoTexto;     Bitmap bitmapU;   ImageView mimageViewU;
+    private static final int CAMERA_TEXTO = 1888;    private static final int CAMERA_DORSODNI = 1889;    private static final int CAMERA_FRENTEDNI = 1890;
     public final int CUSTOMIZED_REQUEST_CODE = 0x0000ffff;
     private static final String TAG = MainActivity.class.getSimpleName();
-    private CameraKitView cameraKitView;    private CameraKitView cameraFrente;
-    private CameraKitView cameraDorso;      private CameraKitView cameraTexto;
-    Activity myactivity;
+    private CameraKitView cameraKitView;     Activity myactivity;
     CameraKitView cameraSelfie;     LinearLayout linear2;   LinearLayout linear3;   LinearLayout linear4; ImageView myImage;
     ImageView imgFrente;    ImageView imgDorso;    ImageView imgTexto;
     String sResult;       String DNI = null;    String TarjetaC = null; ImageView laimagen;
@@ -92,9 +90,6 @@ public class MainActivity extends AppCompatActivity {
         linear4= (LinearLayout) findViewById(R.id.linear2);
 
         cameraKitView = (CameraKitView) findViewById(R.id.camera);
-        cameraFrente =  (CameraKitView) findViewById(R.id.camFrente);
-        cameraDorso =   (CameraKitView) findViewById(R.id.camDorso);
-        cameraTexto =  (CameraKitView) findViewById(R.id.camTexto);
         myactivity = this;
 
 
@@ -152,6 +147,30 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, CAMERA_DORSODNI);
 
         });
+
+
+
+
+
+
+
+
+
+        Button TextoManuscrito = (Button) findViewById(R.id.fototexto);
+        TextoManuscrito.setOnClickListener((View v) -> {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            try {  photoTexto = createTemporaryFile("MutualCentral_Texto", ".jpg");  }
+            catch(Exception e)  { Toast.makeText(getApplicationContext(), "Please check SD card! Image shot is impossible!", Toast.LENGTH_LONG); }
+            UriTexto = PhotoProvider.getPhotoUri(photoTexto);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, UriTexto);
+            // And away we go!
+            startActivityForResult(intent, CAMERA_TEXTO);
+
+        });
+
+
+
 
 
              if (PermissionUtils.isPermissionGranted(this, new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},101)) {
@@ -339,27 +358,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         cameraKitView.onResume();
-        cameraFrente.onResume();
-        cameraDorso.onResume();
-        cameraTexto.onResume();
 
     }
 
     @Override
     protected void onPause() {
         cameraKitView.onPause();
-        cameraFrente.onPause();
-        cameraDorso.onPause();
-        cameraTexto.onPause();
         super.onPause();
     }
 
     @Override
     protected void onStop() {
         cameraKitView.onStop();
-        cameraFrente.onStop();
-        cameraDorso.onStop();
-        cameraTexto.onStop();
         super.onStop();
     }
 
@@ -460,7 +470,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == CAMERA_DORSODNI && resultCode == RESULT_OK) {
             //Bitmap pmphoto = (Bitmap) data.getExtras().get("data");
-            this.getContentResolver().notifyChange(UriFrenteDNI, null);
+            this.getContentResolver().notifyChange(UriDorsoDNI, null);
             ContentResolver cr = this.getContentResolver();
             try
             {
@@ -471,7 +481,44 @@ public class MainActivity extends AppCompatActivity {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
                 byte[] image=stream.toByteArray();
 
-                imgFrente.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 120, 120, false));
+                imgDorso.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 120, 120, false));
+                //mimageView.setImageBitmap(pmphoto);
+                sFotoDorso = android.util.Base64.encodeToString(image, 0);
+                //mimageView.setImageBitmap(bitmap);
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
+                Log.e("UriUri", "Failed to load", e);
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        if (requestCode == CAMERA_TEXTO && resultCode == RESULT_OK) {
+            //Bitmap pmphoto = (Bitmap) data.getExtras().get("data");
+            this.getContentResolver().notifyChange(UriTexto, null);
+            ContentResolver cr = this.getContentResolver();
+            try
+            {
+                bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, UriTexto);
+                //bitmap = scaleBitmap(bitmap);
+                Log.e("Bitmap", String.valueOf(bitmap));
+                ByteArrayOutputStream stream=new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+                byte[] image=stream.toByteArray();
+
+                imgTexto.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 120, 120, false));
                 //mimageView.setImageBitmap(pmphoto);
                 sFotoTexto = android.util.Base64.encodeToString(image, 0);
                 //mimageView.setImageBitmap(bitmap);
@@ -483,6 +530,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+
+
+
+
+
     }
 
 
