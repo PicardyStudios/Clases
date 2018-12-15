@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -35,6 +37,12 @@ public abstract class AppUtils extends  Context {
 
     private static long backPressed = 0;
 
+    public static void mostrarRespuesta (Activity activity, String response) {
+        showToast(activity,response); Log.e("Resultado",response);
+        TextView ResultadoText = (TextView) activity.findViewById(R.id.textView3);
+        ResultadoText.setTextColor(Color.RED); ResultadoText.setText(response);
+
+    }
     public static void enviarPost(Activity activity, String nombres, String apellidos, String documento, String nacimiento, String direccion, String provincia,
                                   String localidad, String telfijo, String telmovil, String email, String sFotoDorso, String sFotoFrente, String sFotoSelfie, String sFotoTexto)
  {
@@ -42,7 +50,7 @@ public abstract class AppUtils extends  Context {
         RequestQueue MyRequestQueue = Volley.newRequestQueue(activity);
         String url = "http://clienteamigo.com.ar/test.php";
                 StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url,
-                response -> showToast(activity,response),
+                response -> mostrarRespuesta(activity,response),
                 error -> Log.e("Respuesta Error", "2"+String.valueOf(error)))
                 {        protected Map<String, String> getParams() {
                          Map<String, String> MyData = new HashMap<String, String>();
