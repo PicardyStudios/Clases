@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     Uri UriFrenteDNI; File photoFrenteDNI;     Bitmap bitmap;   ImageView mimageView;
     Uri UriDorsoDNI; File photoDorsoDNI;     Bitmap bitmapD;   ImageView mimageViewD;
     Uri UriTexto; File photoTexto;     Bitmap bitmapU;   ImageView mimageViewU;
+    Boolean EnviaroNo = true;
     private static final int CAMERA_TEXTO = 1888;    private static final int CAMERA_DORSODNI = 1889;    private static final int CAMERA_FRENTEDNI = 1890;
     public final int CUSTOMIZED_REQUEST_CODE = 0x0000ffff;
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     String sResult;       String DNI = null;    String TarjetaC = null; ImageView laimagen;
     EditText nombres; EditText apellidos; EditText documento; EditText nacimiento; EditText direccion;
     EditText localidad; Spinner provincia; EditText telfijo; EditText telmovil; EditText email; TextView textoapapel; TextView textoapapelD;
-    int TAKE_PHOTO_CODE = 0;    public static int count = 0;    String sFotoDorso = ""; String sFotoFrente= ""; String sFotoTexto= "";
+    int TAKE_PHOTO_CODE = 0;    public static int count = 0;    String sFotoDorso = ""; String sFotoFrente= ""; String sFotoTexto= ""; String sFotoSelfie = "";
 
     private File createTemporaryFile(String part, String ext) throws Exception
     {
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         EscanearCodigo();
 
 
-
+        // BOTON FOTO SELFIE
         Button bSelfie = (Button) findViewById(R.id.bselfie);
         bSelfie.setOnClickListener((View v) -> {
           if(myImage.getVisibility() == View.VISIBLE)  { myImage.setVisibility(View.GONE); cameraKitView.onResume();  Log.e("bSelfie","show camera"); }
@@ -114,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+
+        // BOTON FOTO FRENTE DNI
         Button frenteDNI = (Button) findViewById(R.id.frenteDNI);
         frenteDNI.setOnClickListener((View v) -> {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -122,19 +125,11 @@ public class MainActivity extends AppCompatActivity {
         catch(Exception e)  { Toast.makeText(getApplicationContext(), "Please check SD card! Image shot is impossible!", Toast.LENGTH_LONG); }
         UriFrenteDNI = PhotoProvider.getPhotoUri(photoFrenteDNI);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, UriFrenteDNI);
-        // And away we go!
         startActivityForResult(intent, CAMERA_FRENTEDNI);
-
         });
 
 
-
-
-
-
-
-
-
+        // BOTON FOTO DORSO DNI
         Button dorsoDNI = (Button) findViewById(R.id.dorsoDNI);
         dorsoDNI.setOnClickListener((View v) -> {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -143,19 +138,13 @@ public class MainActivity extends AppCompatActivity {
             catch(Exception e)  { Toast.makeText(getApplicationContext(), "Please check SD card! Image shot is impossible!", Toast.LENGTH_LONG); }
             UriDorsoDNI = PhotoProvider.getPhotoUri(photoDorsoDNI);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, UriDorsoDNI);
-            // And away we go!
             startActivityForResult(intent, CAMERA_DORSODNI);
 
         });
 
 
 
-
-
-
-
-
-
+        // BOTON FOTO TEXTO MANUSCRITO
         Button TextoManuscrito = (Button) findViewById(R.id.fototexto);
         TextoManuscrito.setOnClickListener((View v) -> {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -170,12 +159,61 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        // ENVIAR SOLICITUD
+        Button EnviarSolicitud = (Button) findViewById(R.id.enviarsolicitud);
+        EnviarSolicitud.setOnClickListener((View v) -> {
+            //EditText nombres; EditText apellidos; EditText documento; EditText nacimiento; EditText direccion;
+            //EditText localidad; Spinner provincia; EditText telfijo; EditText telmovil; EditText email;
+
+            Log.e("Provincia",provincia.getSelectedItem().toString());
 
 
 
-             if (PermissionUtils.isPermissionGranted(this, new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},101)) {
-                showToast(this,"Permisos aceptados");
-            } else { showToast(this,"Debe aceptar los permisos para continuar..."); }
+            if(sFotoSelfie.replaceAll("\\s+","").equals("")) {
+                showToast(this,"Debe sacarse una selfie."); Log.e("Verificacion","Debe sacarse una selfie.");   EnviaroNo = false; }
+
+            if(nombres.getText().toString().replaceAll("\\s+","").equals("")) {
+                showToast(this,"Debe completar su Nombre."); Log.e("Verificacion","Debe completar su Nombre.");   EnviaroNo = false; }
+
+            if(apellidos.getText().toString().replaceAll("\\s+","").equals("")) {
+                showToast(this,"Debe completar su Apellido."); Log.e("Verificacion","Debe completar su Apellido.");   EnviaroNo = false; }
+
+            if(documento.getText().toString().replaceAll("\\s+","").equals("")) {
+                showToast(this,"Debe completar su Documento."); Log.e("Verificacion","Debe completar su Documento.");   EnviaroNo = false; }
+
+            if(nacimiento.getText().toString().replaceAll("\\s+","").equals("")) {
+                showToast(this,"Debe completar su Fecha de Nacimiento."); Log.e("Verificacion","Debe completar su Fecha de Nacimiento.");   EnviaroNo = false; }
+
+            if(direccion.getText().toString().replaceAll("\\s+","").equals("")) {
+                showToast(this,"Debe completar su Direccion."); Log.e("Verificacion","Debe completar su Direccion.");   EnviaroNo = false; }
+
+            if(localidad.getText().toString().replaceAll("\\s+","").equals("")) {
+                showToast(this,"Debe completar su Localidad."); Log.e("Verificacion","Debe completar su Localidad.");   EnviaroNo = false; }
+
+            if((telfijo.getText().toString().replaceAll("\\s+","").equals(""))&&(telmovil.getText().toString().replaceAll("\\s+","").equals(""))) {
+                showToast(this,"Debe completar un número de telefono."); Log.e("Verificacion","Debe completar un número de telefono.");   EnviaroNo = false; }
+
+            if(email.getText().toString().replaceAll("\\s+","").equals("")) {
+                showToast(this,"Debe completar su Email."); Log.e("Verificacion","Debe completar su Email.");   EnviaroNo = false; }
+
+
+            if(sFotoFrente.replaceAll("\\s+","").equals("")) {
+                showToast(this,"Debe sacarle una foto al frente del DNI."); Log.e("Verificacion","Debe sacarle una foto al frente del DNI.");   EnviaroNo = false; }
+
+            if(sFotoDorso.replaceAll("\\s+","").equals("")) {
+                showToast(this,"Debe sacarle una foto al dorso del DNI.."); Log.e("Verificacion","Debe sacarle una foto al dorso del DNI.");   EnviaroNo = false; }
+
+            if(sFotoTexto.replaceAll("\\s+","").equals("")) {
+                showToast(this,"Debe sacarle una foto al Texto escrito a mano."); Log.e("Verificacion","Debe sacarle una foto al Texto escrito a mano.");   EnviaroNo = false; }
+
+            if(EnviaroNo) { EnviarSolicitud.setEnabled(false); enviarPost(this, nombres.getText().toString() , apellidos.getText().toString() , documento.getText().toString() , nacimiento.getText().toString() , direccion.getText().toString() , provincia.getSelectedItem().toString(), localidad.getText().toString() , telfijo.getText().toString() , telmovil.getText().toString() , email.getText().toString() , sFotoDorso, sFotoFrente, sFotoSelfie, sFotoTexto); }
+
+        });
+
+
+        if (PermissionUtils.isPermissionGranted(this, new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},101)) {
+           showToast(this,"Permisos aceptados");
+        } else { showToast(this,"Debe aceptar los permisos para continuar..."); }
 
 
 
@@ -328,8 +366,9 @@ public class MainActivity extends AppCompatActivity {
                             myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos); //bm is the bitmap object
                             byte[] b = baos.toByteArray();
                             String img_str = android.util.Base64.encodeToString(b, 0);
-                            Log.e("Base64", img_str);
-                            enviarPost(myactivity, img_str, img_str, img_str);
+                            //Log.e("Base64", img_str);
+                            sFotoSelfie = img_str;
+                            //enviarPost(myactivity, img_str, img_str, img_str);
                             myImage.setImageBitmap(myBitmap);
                             myImage.setVisibility(View.VISIBLE);
                             cameraKitView.onPause();
@@ -420,12 +459,6 @@ public class MainActivity extends AppCompatActivity {
                 sResult = result.getContents();  finishActivity(requestCode); ProcesaResultado();
             }
 
-            /*cameraDorso.onStart();
-            cameraDorso.onPause();
-            cameraTexto.onStart();
-            cameraTexto.onPause();
-            cameraFrente.onStart();
-            cameraFrente.onPause();*/
             cameraKitView.onStart();
         }
 
@@ -446,7 +479,7 @@ public class MainActivity extends AppCompatActivity {
 
                 imgFrente.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 120, 120, false));
                 //mimageView.setImageBitmap(pmphoto);
-                sFotoTexto = android.util.Base64.encodeToString(image, 0);
+                sFotoFrente = android.util.Base64.encodeToString(image, 0);
                 //mimageView.setImageBitmap(bitmap);
             }
             catch (Exception e)
@@ -474,14 +507,14 @@ public class MainActivity extends AppCompatActivity {
             ContentResolver cr = this.getContentResolver();
             try
             {
-                bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, UriDorsoDNI);
+                bitmapD = android.provider.MediaStore.Images.Media.getBitmap(cr, UriDorsoDNI);
                 //bitmap = scaleBitmap(bitmap);
-                Log.e("Bitmap", String.valueOf(bitmap));
+                Log.e("Bitmap", String.valueOf(bitmapD));
                 ByteArrayOutputStream stream=new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+                bitmapD.compress(Bitmap.CompressFormat.JPEG, 70, stream);
                 byte[] image=stream.toByteArray();
 
-                imgDorso.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 120, 120, false));
+                imgDorso.setImageBitmap(Bitmap.createScaledBitmap(bitmapD, 120, 120, false));
                 //mimageView.setImageBitmap(pmphoto);
                 sFotoDorso = android.util.Base64.encodeToString(image, 0);
                 //mimageView.setImageBitmap(bitmap);
@@ -511,14 +544,14 @@ public class MainActivity extends AppCompatActivity {
             ContentResolver cr = this.getContentResolver();
             try
             {
-                bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, UriTexto);
+                bitmapU = android.provider.MediaStore.Images.Media.getBitmap(cr, UriTexto);
                 //bitmap = scaleBitmap(bitmap);
-                Log.e("Bitmap", String.valueOf(bitmap));
+                Log.e("Bitmap", String.valueOf(bitmapU));
                 ByteArrayOutputStream stream=new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+                bitmapU.compress(Bitmap.CompressFormat.JPEG, 70, stream);
                 byte[] image=stream.toByteArray();
 
-                imgTexto.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 120, 120, false));
+                imgTexto.setImageBitmap(Bitmap.createScaledBitmap(bitmapU, 120, 120, false));
                 //mimageView.setImageBitmap(pmphoto);
                 sFotoTexto = android.util.Base64.encodeToString(image, 0);
                 //mimageView.setImageBitmap(bitmap);

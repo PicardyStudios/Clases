@@ -35,18 +35,32 @@ public abstract class AppUtils extends  Context {
 
     private static long backPressed = 0;
 
-    public static void enviarPost(Activity activity,String sFotoFrente,String sFotoDorso, String sFotoTexto) {
+    public static void enviarPost(Activity activity, String nombres, String apellidos, String documento, String nacimiento, String direccion, String provincia,
+                                  String localidad, String telfijo, String telmovil, String email, String sFotoDorso, String sFotoFrente, String sFotoSelfie, String sFotoTexto)
+ {
         Log.e("enviarPost","Iniciado..");
         RequestQueue MyRequestQueue = Volley.newRequestQueue(activity);
         String url = "http://clienteamigo.com.ar/test.php";
                 StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url,
-                response -> Log.e("Respuesta Response","1"+response),
+                response -> showToast(activity,response),
                 error -> Log.e("Respuesta Error", "2"+String.valueOf(error)))
                 {        protected Map<String, String> getParams() {
                          Map<String, String> MyData = new HashMap<String, String>();
-                         MyData.put("FotoFrente",sFotoFrente);
-                         MyData.put("FotoDorso", "2");
-                         MyData.put("FotoTexto", "3");
+                         MyData.put("nombres",nombres);
+                         MyData.put("apellidos", apellidos);
+                         MyData.put("documento", documento);
+                    MyData.put("nacimiento", nacimiento);
+                    MyData.put("direccion", direccion);
+                    MyData.put("provincia", provincia);
+                    MyData.put("localidad", localidad);
+                    MyData.put("telfijo", telfijo);
+                    MyData.put("telmovil", telmovil);
+                    MyData.put("email", email);
+                    MyData.put("sFotoDorso", sFotoDorso);
+                    MyData.put("sFotoFrente", sFotoFrente);
+                    MyData.put("sFotoSelfie", sFotoSelfie);
+                    MyData.put("sFotoTexto", sFotoTexto);
+
                 return MyData;
             }
         };
