@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             //EditText nombres; EditText apellidos; EditText documento; EditText nacimiento; EditText direccion;
             //EditText localidad; Spinner provincia; EditText telfijo; EditText telmovil; EditText email;
 
-            Log.e("Provincia",provincia.getSelectedItem().toString());
+            EnviaroNo = true;
 
 
 
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
             if(sFotoTexto.replaceAll("\\s+","").equals("")) {
                 showToast(this,"Debe sacarle una foto al Texto escrito a mano."); Log.e("Verificacion","Debe sacarle una foto al Texto escrito a mano.");   EnviaroNo = false; }
 
-            if(EnviaroNo) { EnviarSolicitud.setEnabled(false); enviarPost(this, nombres.getText().toString() , apellidos.getText().toString() , documento.getText().toString() , nacimiento.getText().toString() , direccion.getText().toString() , provincia.getSelectedItem().toString(), localidad.getText().toString() , telfijo.getText().toString() , telmovil.getText().toString() , email.getText().toString() , sFotoDorso, sFotoFrente, sFotoSelfie, sFotoTexto); }
+            if(EnviaroNo==true) { EnviarSolicitud.setEnabled(false); enviarPost(this, nombres.getText().toString() , apellidos.getText().toString() , documento.getText().toString() , nacimiento.getText().toString() , direccion.getText().toString() , provincia.getSelectedItem().toString(), localidad.getText().toString() , telfijo.getText().toString() , telmovil.getText().toString() , email.getText().toString() , sFotoDorso, sFotoFrente, sFotoSelfie, sFotoTexto); } else { Log.e("Boton","No True"); }
 
         });
 
